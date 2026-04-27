@@ -1,0 +1,29 @@
+{% extends "ehr/base.html" %}
+
+{% block title %}Session Handling{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h1>Session Handling Demo</h1>
+    <p class="muted">This page stores a selected hospital in the session and uses it to filter dashboard and registration views.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <label for="hospital_id">Select hospital</label>
+            <select name="hospital_id" id="hospital_id" class="form-control">
+                {% for hospital in hospitals %}
+                    <option value="{{ hospital.id }}" {% if hospital.id == selected_hospital_id %}selected{% endif %}>
+                        {{ hospital.name }}
+                    </option>
+                {% empty %}
+                    <option disabled selected>Create a hospital first.</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="actions">
+            <button type="submit">Store in Session</button>
+            <a class="btn btn-secondary" href="{% url 'hospital-session-clear' %}">Clear Session</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

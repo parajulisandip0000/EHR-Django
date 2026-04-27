@@ -1,0 +1,49 @@
+{% extends "ehr/base.html" %}
+{% load ehr_extras %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <div class="actions" style="justify-content: space-between;">
+        <div>
+            <h1>{{ title }}</h1>
+            <p class="muted">Create, retrieve, update, and delete {{ entity_name }} records.</p>
+        </div>
+        <a class="btn" href="{{ create_url }}">Create {{ entity_name|title }}</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                {% for header in headers %}
+                    <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for object in objects %}
+                <tr>
+                    {% for field in fields %}
+                        <td>
+                            {% if field == "__str__" %}
+                                {{ object }}
+                            {% else %}
+                                {{ object|getattribute:field }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                    <td>
+                        <a href="{% url entity_name|add:'-update' object.pk %}">Edit</a>
+                        |
+                        <a href="{% url entity_name|add:'-delete' object.pk %}">Delete</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="{{ headers|length }}">No {{ entity_name }} records found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

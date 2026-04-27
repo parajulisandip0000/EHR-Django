@@ -1,0 +1,73 @@
+{% extends "ehr/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="panel">
+    <h1>EHR Dashboard</h1>
+    <p class="muted">Server-rendered CRUD, validation, session handling, and REST API in one Django project.</p>
+    {% if selected_hospital %}
+        <p><strong>Session hospital:</strong> {{ selected_hospital.name }} | <a href="{% url 'hospital-session-clear' %}">Clear session</a></p>
+    {% endif %}
+</div>
+
+<div class="grid" style="margin-top: 1rem;">
+    <div class="card"><span>Patients</span><strong>{{ stats.patients }}</strong></div>
+    <div class="card"><span>Doctors</span><strong>{{ stats.doctors }}</strong></div>
+    <div class="card"><span>Hospitals</span><strong>{{ stats.hospitals }}</strong></div>
+    <div class="card"><span>Registrations</span><strong>{{ stats.registrations }}</strong></div>
+</div>
+
+<div class="grid" style="margin-top: 1rem;">
+    <section class="panel">
+        <div class="actions" style="justify-content: space-between;">
+            <h2>Recent Registrations</h2>
+            <a class="btn" href="{% url 'registration-create' %}">New Registration</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Hospital</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registration in recent_registrations %}
+                    <tr>
+                        <td>{{ registration.patient }}</td>
+                        <td>{{ registration.doctor }}</td>
+                        <td>{{ registration.hospital }}</td>
+                        <td>{{ registration.appointment_date }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="4">No registrations yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section class="panel">
+        <h2>Hospital Summary</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hospital</th>
+                    <th>Total Registrations</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hospital in hospital_summary %}
+                    <tr>
+                        <td>{{ hospital.name }}</td>
+                        <td>{{ hospital.total_registrations }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="2">No hospitals yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% endblock %}

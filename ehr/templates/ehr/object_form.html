@@ -1,0 +1,28 @@
+{% extends "ehr/base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="panel">
+    <h1>{{ title }}</h1>
+    <p class="muted">Built-in Django validation runs before the record is saved. Custom validation methods add domain-specific checks.</p>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-row">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="muted">{{ field.help_text }}</small>
+                {% endif %}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        {{ form.non_field_errors }}
+        <div class="actions">
+            <button type="submit">Save</button>
+            <a class="btn btn-secondary" href="{{ list_url }}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
