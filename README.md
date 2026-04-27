@@ -47,8 +47,10 @@ Windows Command Prompt:
 4. Install dependencies:
 
 ```bash
-pip install django djangorestframework
+pip install -r requirements.txt
 ```
+
+This installs the exact dependency versions listed in [requirements.txt](d:/Study/KU%20HI151/EHR/requirements.txt).
 
 ## Database Setup
 
@@ -164,4 +166,3 @@ EHR-Django/
 - Default database: SQLite
 - Default timezone in settings: `Asia/Kathmandu`
 - `ALLOWED_HOSTS` is configured for local development
-
